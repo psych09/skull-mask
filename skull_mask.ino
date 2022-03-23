@@ -11,7 +11,8 @@
 #define CARDCS 4     // Card chip select pin
 
 // DREQ should be an Int pin, see http://arduino.cc/en/Reference/attachInterrupt
-#define DREQ 3       // VS1053 Data request, ideally an Interrupt pin
+#define DREQ 2       // VS1053 Data request, ideally an Interrupt pin
+
 
 #define RED_LED A5
 #define GREEN_LED A4
@@ -87,7 +88,7 @@ void loop() {
   jawTriggerState = digitalRead(JAW_TRIGGER_INPUT);
   nextButtonState = digitalRead(NEXT_BUTTON_INPUT);
   backButtonState = digitalRead(BACK_BUTTON_INPUT);
-  Serial.println(jawTriggerState);
+//  Serial.println(jawTriggerState);
 //  Serial.println(nextButtonState);
 //  Serial.println(backButtonState);
 //  Serial.println(index);
