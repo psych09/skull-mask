@@ -11,7 +11,7 @@
 #define CARDCS 4     // Card chip select pin
 
 // DREQ should be an Int pin, see http://arduino.cc/en/Reference/attachInterrupt
-#define DREQ 2       // VS1053 Data request, ideally an Interrupt pin
+#define DREQ 3       // VS1053 Data request, ideally an Interrupt pin
 
 
 #define RED_LED A5
