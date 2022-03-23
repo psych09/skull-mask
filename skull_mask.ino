@@ -13,9 +13,9 @@
 // DREQ should be an Int pin, see http://arduino.cc/en/Reference/attachInterrupt
 #define DREQ 3       // VS1053 Data request, ideally an Interrupt pin
 
-#define RED_LED 1
-#define GREEN_LED 2
-#define BLUE_LED 5
+#define RED_LED A5
+#define GREEN_LED A4
+#define BLUE_LED A3
 
 #define JAW_TRIGGER_INPUT A0
 #define NEXT_BUTTON_INPUT A1
@@ -26,9 +26,9 @@ Adafruit_VS1053_FilePlayer musicPlayer =
   // create shield object!
   Adafruit_VS1053_FilePlayer(SHIELD_RESET, SHIELD_CS, SHIELD_DCS, DREQ, CARDCS);
 
-int jawTriggerState = 0;
-int nextButtonState = 0;
-int backButtonState = 0;
+int jawTriggerState = 1;
+int nextButtonState = 1;
+int backButtonState = 1;
 
 
 
@@ -40,9 +40,9 @@ int len = (sizeof(audioFiles) / sizeof(String));
 ////
 
 void setup() {
-  pinMode(JAW_TRIGGER_INPUT, INPUT);
-  pinMode(NEXT_BUTTON_INPUT, INPUT);
-  pinMode(BACK_BUTTON_INPUT, INPUT);
+  pinMode(JAW_TRIGGER_INPUT, INPUT_PULLUP);
+  pinMode(NEXT_BUTTON_INPUT, INPUT_PULLUP);
+  pinMode(BACK_BUTTON_INPUT, INPUT_PULLUP);
   
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
@@ -94,7 +94,7 @@ void loop() {
   
  
 
-  if(nextButtonState == 1)
+  if(nextButtonState == 0)
   {
     if(index > 1)
     {
@@ -108,7 +108,7 @@ void loop() {
     }
   }
 
-  if(backButtonState == 1)
+  if(backButtonState == 0)
   {
     if(index < 1)
     {
@@ -122,8 +122,11 @@ void loop() {
     }
   }
   
-  if(jawTriggerState == 1)
+  if(jawTriggerState == 0)
   {
+    digitalWrite(RED_LED, 1);
+    digitalWrite(GREEN_LED, 0);
+    digitalWrite(BLUE_LED, 0);
     // Start playing a file, then we can do stuff while waiting for it to finish
     if (! musicPlayer.startPlayingFile(audioFiles[index].c_str())) {
       Serial.print("Could not open file: ");
@@ -138,9 +141,6 @@ void loop() {
       // to do something else like handling LEDs or buttons :)
       Serial.print(".");
       delay(1000);
-      digitalWrite(RED_LED, 1);
-      digitalWrite(GREEN_LED, 0);
-      digitalWrite(BLUE_LED, 0);
     }
     Serial.println("Done playing sound");
     delay(1000);
