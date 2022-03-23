@@ -11,10 +11,10 @@
 #define CARDCS 4     // Card chip select pin
 
 // DREQ should be an Int pin, see http://arduino.cc/en/Reference/attachInterrupt
-#define DREQ 3       // VS1053 Data request, ideally an Interrupt pin
+#define DREQ 2       // VS1053 Data request, ideally an Interrupt pin
 
-#define RED_LED 1
-#define GREEN_LED 2
+#define RED_LED 3
+#define GREEN_LED 1
 #define BLUE_LED 5
 
 #define JAW_TRIGGER_INPUT A0
@@ -26,7 +26,7 @@ Adafruit_VS1053_FilePlayer musicPlayer =
   // create shield object!
   Adafruit_VS1053_FilePlayer(SHIELD_RESET, SHIELD_CS, SHIELD_DCS, DREQ, CARDCS);
 
-int jawTriggerState = 0;
+int jawTriggerState = 1;
 int nextButtonState = 0;
 int backButtonState = 0;
 
@@ -40,7 +40,7 @@ int len = (sizeof(audioFiles) / sizeof(String));
 ////
 
 void setup() {
-  pinMode(JAW_TRIGGER_INPUT, INPUT);
+  pinMode(JAW_TRIGGER_INPUT, INPUT_PULLUP);
   pinMode(NEXT_BUTTON_INPUT, INPUT);
   pinMode(BACK_BUTTON_INPUT, INPUT);
   
@@ -87,7 +87,7 @@ void loop() {
   jawTriggerState = digitalRead(JAW_TRIGGER_INPUT);
   nextButtonState = digitalRead(NEXT_BUTTON_INPUT);
   backButtonState = digitalRead(BACK_BUTTON_INPUT);
-  Serial.println(jawTriggerState);
+//  Serial.println(jawTriggerState);
 //  Serial.println(nextButtonState);
 //  Serial.println(backButtonState);
 //  Serial.println(index);
@@ -122,7 +122,7 @@ void loop() {
     }
   }
   
-  if(jawTriggerState == 1)
+  if(jawTriggerState == 0)
   {
     // Start playing a file, then we can do stuff while waiting for it to finish
     if (! musicPlayer.startPlayingFile(audioFiles[index].c_str())) {
