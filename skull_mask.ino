@@ -1,3 +1,5 @@
+#include <Adafruit_VS1053.h>
+
 // include SPI, MP3 and SD libraries
 #include <SPI.h>
 #include <Adafruit_VS1053.h>
@@ -17,9 +19,9 @@
 #define GREEN_LED 2
 #define BLUE_LED 5
 
-#define JAW_TRIGGER_INPUT A0
-#define NEXT_BUTTON_INPUT A1
-#define BACK_BUTTON_INPUT A2
+#define JAW_TRIGGER_INPUT 2
+#define NEXT_BUTTON_INPUT 3
+#define BACK_BUTTON_INPUT 4
 
 
 Adafruit_VS1053_FilePlayer musicPlayer = 
@@ -40,16 +42,16 @@ int len = (sizeof(audioFiles) / sizeof(String));
 ////
 
 void setup() {
-  pinMode(JAW_TRIGGER_INPUT, INPUT);
-  pinMode(NEXT_BUTTON_INPUT, INPUT);
-  pinMode(BACK_BUTTON_INPUT, INPUT);
+  musicPlayer.GPIO_pinMode(JAW_TRIGGER_INPUT, INPUT);
+  musicPlayer.GPIO_pinMode(BACK_BUTTON_INPUT, INPUT);
+  musicPlayer.GPIO_pinMode(NEXT_BUTTON_INPUT, INPUT);
   
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
   pinMode(BLUE_LED, OUTPUT);
   
   Serial.begin(9600);
-  Serial.println("Adafruit VS1053 Library Test");
+  Serial.println("Skull Mask");
 
   // initialise the music player
   if (! musicPlayer.begin()) { // initialise the music player
@@ -84,9 +86,9 @@ void setup() {
 
 
 void loop() {  
-  jawTriggerState = digitalRead(JAW_TRIGGER_INPUT);
-  nextButtonState = digitalRead(NEXT_BUTTON_INPUT);
-  backButtonState = digitalRead(BACK_BUTTON_INPUT);
+  jawTriggerState = musicPlayer.GPIO_digitalRead(JAW_TRIGGER_INPUT);
+  nextButtonState = musicPlayer.GPIO_digitalRead(BACK_BUTTON_INPUT);
+  backButtonState = musicPlayer.GPIO_digitalRead(NEXT_BUTTON_INPUT);
   Serial.println(jawTriggerState);
 //  Serial.println(nextButtonState);
 //  Serial.println(backButtonState);
@@ -136,14 +138,11 @@ void loop() {
     while (musicPlayer.playingMusic) {
       // file is now playing in the 'background' so now's a good time
       // to do something else like handling LEDs or buttons :)
-      Serial.print(".");
-      delay(1000);
       digitalWrite(RED_LED, 1);
       digitalWrite(GREEN_LED, 0);
       digitalWrite(BLUE_LED, 0);
     }
     Serial.println("Done playing sound");
-    delay(1000);
   }
   else
   {
