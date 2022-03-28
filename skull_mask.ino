@@ -107,6 +107,7 @@ void loop() {
       index += 1;
       delay(500); 
     }
+    Serial.println(index);
   }
 
   if(backButtonState == 0)
@@ -121,6 +122,7 @@ void loop() {
       index -= 1;
       delay(500);
     }
+    Serial.println(index);
   }
   
   if(jawTriggerState == 0)
@@ -136,12 +138,22 @@ void loop() {
     }
     Serial.print(F("Started playing file: "));
     Serial.print(audioFiles[index].c_str());
+
+    
   
     while (musicPlayer.playingMusic) {
       // file is now playing in the 'background' so now's a good time
       // to do something else like handling LEDs or buttons :)
-      Serial.print(".");
-      delay(1000);
+      backButtonState = digitalRead(BACK_BUTTON_INPUT);
+      nextButtonState = digitalRead(NEXT_BUTTON_INPUT);
+      if(backButtonState == 0)
+      {
+        musicPlayer.stopPlaying();
+      }
+      if(nextButtonState == 0)
+      { 
+        musicPlayer.stopPlaying();
+      }
     }
     Serial.println("Done playing sound");
     delay(1000);
