@@ -34,8 +34,8 @@ int backButtonState = 1;
 
 
 int index = 0;
-String audioFiles[] = {"/ghstgasp.mp3", "/ghstgrwl.mp3", "/ghstmoan.mp3"};
-int len = (sizeof(audioFiles) / sizeof(String));
+String audioFiles[] = {"/ghstgrwl.mp3", "/ghstmoan.mp3", "/GhstBrth.aac", "/ScryGhst.aac", "/AngryCrd.aac"};
+int len = (sizeof(audioFiles) / sizeof(audioFiles[0]));
 
 
 ////
@@ -97,7 +97,7 @@ void loop() {
 
   if(nextButtonState == 0)
   {
-    if(index > 1)
+    if(index > 3)
     {
       index = 0;
       delay(500);
@@ -114,7 +114,7 @@ void loop() {
   {
     if(index < 1)
     {
-      index = 2;
+      index = 4;
       delay(500);
     }
     else
